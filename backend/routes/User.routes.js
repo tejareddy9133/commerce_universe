@@ -2,6 +2,8 @@ const express = require("express");
 const { UserModel } = require("../models/user.model");
 const UserRoutes = express.Router();
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+
 UserRoutes.post("/register", async (req, res) => {
   const { email, password, username } = req.body;
   try {
@@ -27,11 +29,22 @@ UserRoutes.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
     const user = await UserModel.findOne({ email });
-    if (user.password) {
-      console.log(user);
-      res.status(200).json({ msg: "user login sucessfully" });
+    if (user) {
+      //acess
+      bcrypt.compare(password, user.password, function (err, result) {
+        if (result) {
+          var token = jwt.sign({ user: user.username }, "cleancode", {
+            expiresIn: "1h",
+          });
+          res.status(200).json({ msg: "login sucessfull", token });
+        } else {
+          res.status(200).json({ msg: "credintials wrong" });
+        }
+      });
     } else {
-      res.status(200).json({ msg: "Your Credentials are wrong" });
+      res
+        .status(200)
+        .json({ msg: "your are email is not registered in our app" });
     }
   } catch (error) {
     res.status(400).json({ err: error.message });
