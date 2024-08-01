@@ -3,6 +3,7 @@ const { UserModel } = require("../models/user.model");
 const UserRoutes = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const { Block_list } = require("../middleware/Auth");
 
 UserRoutes.post("/register", async (req, res) => {
   const { email, password, username } = req.body;
@@ -51,4 +52,11 @@ UserRoutes.post("/login", async (req, res) => {
   }
 });
 
+UserRoutes.post("/logout", async (req, res) => {
+  const token = req.headers.authorization?.split(" ")[1];
+  if (token) {
+    Block_list.push(token);
+    res.status(200).json({ msg: "Logged out sucessfully" });
+  }
+});
 module.exports = { UserRoutes };
