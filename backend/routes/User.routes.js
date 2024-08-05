@@ -37,7 +37,7 @@ UserRoutes.post("/login", async (req, res) => {
           var token = jwt.sign({ user: user.username }, "cleancode", {
             expiresIn: "1h",
           });
-          res.status(200).json({ msg: "login sucessfull", token });
+          res.status(200).json({ msg: "login sucessfull", token, user });
         } else {
           res.status(200).json({ msg: "credintials wrong" });
         }

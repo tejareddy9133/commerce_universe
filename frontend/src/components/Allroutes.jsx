@@ -4,6 +4,9 @@ import Homepage from "../pages/Homepage";
 import Products from "../pages/Products";
 import About from "../pages/About";
 import Contact from "../pages/Contact";
+import Sidebar from "../admin/pages/AdminSidebar";
+import Login from "../pages/Login";
+import Signup from "../pages/Signup";
 const Allroutes = () => {
   return (
     <Routes>
@@ -11,6 +14,9 @@ const Allroutes = () => {
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
       <Route path="/products" element={<Products />} />
+      <Route path="/admin" element={<Sidebar />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<Signup />} />
     </Routes>
   );
 };

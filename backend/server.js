@@ -9,6 +9,7 @@ require("dotenv").config();
 app.use(express.json());
 app.use("/users", UserRoutes);
 app.use("/products", ProductRoutes);
+
 app.listen(process.env.PORT, async () => {
   try {
     await connection;
