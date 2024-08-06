@@ -11,30 +11,35 @@ import {
   Button,
   useToast,
 } from "@chakra-ui/react";
+import { useSearchParams } from "react-router-dom";
 
 const IMAGE =
   "https://images.unsplash.com/photo-1518051870910-a46e30d9db16?ixlib=rb-1.2.1&ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&auto=format&fit=crop&w=1350&q=80";
 
-export default function ProductCard({ thumbnail, brand, title, price, _id }) {
+export default function CartProductcard({
+  thumbnail,
+  brand,
+  title,
+  price,
+  _id,
+}) {
   const toast = useToast();
+  const [id, setid] = useSearchParams({});
 
-  const addToCart = () => {
+  const removeProduct = (id) => {
+    setid({ id: id });
     // Retrieve the existing cart items from local storage
     const existingCart = JSON.parse(localStorage.getItem("cart")) || [];
 
     // Add the new item to the cart
-    const updatedCart = [
-      ...existingCart,
-      { thumbnail, brand, title, price, _id },
-    ];
-
+    const updatedCart = existingCart.filter((el, ind) => id != el._id);
     // Store the updated cart back in local storage
     localStorage.setItem("cart", JSON.stringify(updatedCart));
 
     // Show a success toast message
     toast({
-      title: "Added to cart.",
-      description: "We have added this item successfully to the cart.",
+      title: "removed from cart.",
+      description: "We have removed this item successfully from the cart.",
       status: "success",
       duration: 9000,
       isClosable: true,
@@ -100,7 +105,7 @@ export default function ProductCard({ thumbnail, brand, title, price, _id }) {
               $199
             </Text>
             <Button bg={"tomato"}>Buy Now</Button>
-            <Button onClick={addToCart}>Add to Cart</Button>
+            <Button onClick={() => removeProduct(_id)}>Remove</Button>
           </Stack>
         </Stack>
       </Box>
